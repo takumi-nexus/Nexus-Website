@@ -272,11 +272,11 @@ border:1px solid var(--line);border-radius:var(--r-md);padding:8px;box-shadow:0 
 <script>
 /* ===== Configuration centralisée : à renseigner ===== */
 const CONFIG = {
-  owner: "takumi",                 // Propriétaire GitHub (ex. "mon-compte"). Vide = téléchargement indisponible.
+  owner: "takumi-nexus",     // Propriétaire GitHub. Vide = téléchargement indisponible.
   repo: "Nexus-Monitor",
-  social: { github: "https://github.com/takumi-nexus", instagram: "https://www.instagram.com/n.mstk06k/", discord: "https://discord.com/users/1563134194127872000" },   // URL complètes ; vide = lien masqué
+  social: { github: "", instagram: "", discord: "" },   // URL complètes ; vide = lien masqué
   alertsFeature: false,      // true uniquement si les alertes existent dans la version livrée
-  requirements: { arch: "x64", ram: "4 GB", disk: "500 MB", other: "Un peu de curiosité" } // vide = « à confirmer »
+  requirements: { arch: "", ram: "", disk: "", other: "" } // vide = « à confirmer »
 };
 
 const T = {
@@ -367,7 +367,7 @@ async function loadReleases(){
   try{
     const r=await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/releases?per_page=30`,{headers:{Accept:"application/vnd.github+json"}});
     if(r.status===403||r.status===429)return{status:"rate"};
-    if(!r.ok)return{status:"err"};
+    if(!r.ok){console.error("[NEXUS] GitHub HTTP",r.status,r.url);return{status:"err"};}
     const data=await r.json();
     if(!Array.isArray(data))return{status:"err"};
     const rel=data.filter(x=>x&&!x.draft&&typeof x.tag_name==="string");
@@ -375,7 +375,7 @@ async function loadReleases(){
     const latest=rel.find(x=>!x.prerelease)||null;
     const inst=latest?pickInstaller(latest.assets):null;
     return{status:latest?(inst?"ok":"noinst"):"none",releases:rel,latest,inst};
-  }catch(e){return{status:"err"}}
+  }catch(e){console.error("[NEXUS] fetch GitHub impossible :",e);return{status:"err"}}
 }
 
 /* ---------- Notes de version ---------- */
