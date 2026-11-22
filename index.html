@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NEXUS</title>
+<meta name="description" content="NEXUS, le logiciel de monitoring matériel pour Windows 11.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#F2E8D8;--white:#fff;--g1:#E8E8E8;--g2:#858585;--g3:#424242;--ink:#171717;
+--bg:#fff;--fg:#171717;--muted:#424242;--line:#E8E8E8;
+--font:"Inter","Geist",system-ui,-apple-system,"Segoe UI",sans-serif;
+--r-lg:28px;--r-md:18px;--ease:cubic-bezier(.2,.7,.2,1)}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:96px;-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--fg);line-height:1.55;overflow-x:hidden;
+padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:8px}
+.wrap{width:min(1180px,100% - 40px);margin-inline:auto}
+section{padding:clamp(72px,11vw,150px) 0}
+h1,h2,h3{font-weight:600;letter-spacing:-.035em;line-height:1.04}
+h2{font-size:clamp(32px,5vw,58px);max-width:16ch}
+.lead{color:var(--muted);font-size:clamp(17px,1.6vw,21px);max-width:46ch;margin-top:22px}
+
+/* Header */
+header{position:sticky;top:12px;z-index:50;padding:0 12px}
+.nav{max-width:1040px;margin:12px auto 0;display:flex;align-items:center;gap:8px;padding:8px 8px 8px 22px;
+background:rgba(255,255,255,.78);-webkit-backdrop-filter:saturate(1.6) blur(18px);backdrop-filter:saturate(1.6) blur(18px);
+border:1px solid rgba(23,23,23,.07);border-radius:999px;box-shadow:0 1px 2px rgba(23,23,23,.04);transition:max-width .4s var(--ease)}
+.logo{font-weight:700;letter-spacing:.14em;text-decoration:none;font-size:15px;margin-right:auto}
+.links{display:flex;gap:2px}
+.links a{padding:8px 14px;border-radius:999px;text-decoration:none;font-size:14px;color:var(--muted);transition:background .2s,color .2s}
+.links a:hover{background:var(--g1);color:var(--ink)}
+.lang{display:flex;background:var(--g1);border-radius:999px;padding:2px}
+.lang button{border:0;background:none;font:inherit;font-size:12px;font-weight:600;padding:6px 10px;border-radius:999px;cursor:pointer;color:var(--g3)}
+.lang button[aria-pressed=true]{background:var(--ink);color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--ink);color:#fff;border:0;
+font:inherit;font-weight:500;font-size:15px;padding:14px 26px;border-radius:999px;text-decoration:none;cursor:pointer;
+transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px -10px rgba(23,23,23,.55)}
+.btn:active{transform:translateY(0)}
+.btn.sm{padding:9px 16px;font-size:14px}
+.btn[aria-disabled=true]{background:var(--g1);color:var(--g2);cursor:not-allowed;pointer-events:none;box-shadow:none}
+.burger{display:none;width:40px;height:40px;border-radius:50%;border:0;background:var(--g1);cursor:pointer;place-items:center}
+.burger svg{width:18px;height:18px}
+.scrolled .nav{max-width:760px}
+
+/* Hero */
+.hero{padding-top:clamp(48px,8vw,110px);padding-bottom:clamp(64px,9vw,120px)}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
+h1{font-size:clamp(46px,8.4vw,112px);letter-spacing:-.05em;line-height:.96}
+.hero .cta{display:flex;flex-wrap:wrap;align-items:center;gap:18px 22px;margin-top:38px}
+.compat{font-size:14px;color:var(--g2)}
+.mark{width:100%;max-width:470px;justify-self:end;aspect-ratio:1}
+.mark circle.ring{fill:none;stroke:var(--ink);stroke-width:1;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2.4s var(--ease) forwards}
+.mark circle.ring:nth-of-type(2){animation-delay:.25s}.mark circle.ring:nth-of-type(3){animation-delay:.5s}
+.mark .fade{opacity:0;animation:in 1s 1.6s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}@keyframes in{to{opacity:1}}
+
+/* Features */
+.features{background:var(--cream);border-radius:var(--r-lg) var(--r-lg) 0 0}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:56px}
+.card{position:relative;overflow:hidden;background:#fff;border:1px solid rgba(23,23,23,.08);border-radius:var(--r-lg);
+padding:30px;display:flex;flex-direction:column;justify-content:space-between;min-height:230px;transition:transform .35s var(--ease),border-color .3s}
+.card:hover{transform:translateY(-4px);border-color:rgba(23,23,23,.25)}
+.card .ico{width:44px;height:44px;border-radius:14px;background:var(--cream);display:grid;place-items:center}
+.card svg{width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.card h3{font-size:22px;letter-spacing:-.02em;margin:34px 0 8px}
+.card p{color:var(--muted);font-size:15.5px;max-width:34ch}
+.card>*{position:relative;z-index:1}
+.card::after{content:"";position:absolute;z-index:0;pointer-events:none;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;
+border:1px solid var(--g1);box-shadow:0 0 0 28px #fff,0 0 0 29px var(--g1),0 0 0 58px #fff,0 0 0 59px var(--g1)}
+.c-cpu{grid-column:span 4;grid-row:span 2;background:var(--ink);color:#fff;border-color:var(--ink)}
+.c-cpu p{color:#bdbdbd}.c-cpu .ico{background:var(--cream)}
+.c-cpu h3{font-size:clamp(34px,4.4vw,56px);margin-top:90px}
+.c-cpu::after{border-color:#2c2c2c;box-shadow:0 0 0 28px var(--ink),0 0 0 29px #2c2c2c,0 0 0 58px var(--ink),0 0 0 59px #2c2c2c;right:-30px;top:-30px;width:260px;height:260px}
+.c-gpu,.c-hw{grid-column:span 2}
+.c-ram,.c-ssd,.c-charts,.c-hist,.c-alerts{grid-column:span 2}
+.c-charts{grid-column:span 3}.c-hist{grid-column:span 3}
+
+/* Config */
+.req{display:grid;grid-template-columns:1fr 1.2fr;gap:48px;align-items:start}
+dl.specs{border-top:1px solid var(--ink)}
+.specs div{display:flex;justify-content:space-between;gap:24px;padding:20px 0;border-bottom:1px solid var(--line)}
+.specs dt{color:var(--muted)}.specs dd{font-weight:500;text-align:right}
+.tbc{color:var(--g2);font-weight:400}
+.note{color:var(--g2);font-size:14px;margin-top:18px}
+
+/* Download */
+.dl{background:var(--cream);border-radius:var(--r-lg);padding:clamp(28px,6vw,72px);display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:end}
+.dl h2{max-width:12ch}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:0}
+.facts div{padding:14px 0;border-top:1px solid rgba(23,23,23,.18)}
+.facts dt{font-size:13px;color:var(--g3)}.facts dd{font-weight:600;word-break:break-word}
+.facts .full{grid-column:1/-1}
+.dlbox .btn{margin-top:26px;width:100%;padding:18px}
+.status{margin-top:18px;font-size:15px;color:var(--g3)}
+.skeleton{display:inline-block;width:5em;height:1em;border-radius:6px;background:rgba(23,23,23,.1);vertical-align:middle}
+
+/* Changelog */
+.log{margin-top:48px;border-top:1px solid var(--ink)}
+.ver{border-bottom:1px solid var(--line)}
+.ver>summary,.ver>.head{list-style:none;display:flex;align-items:baseline;gap:18px;padding:26px 0;cursor:pointer}
+.ver>summary::-webkit-details-marker{display:none}
+.ver .v{font-size:clamp(24px,3vw,34px);font-weight:600;letter-spacing:-.03em}
+.ver .d{color:var(--g2);font-size:15px;margin-right:auto}
+.ver .chev{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.6;transition:transform .3s var(--ease);align-self:center}
+details[open] .chev{transform:rotate(180deg)}
+.body{padding:0 0 34px;display:grid;gap:22px;max-width:70ch}
+.body h4{font-size:15px;font-weight:600;margin-bottom:6px}
+.body ul{padding-left:18px;color:var(--muted)}.body li{margin:4px 0}
+.body pre{font:inherit;color:var(--muted);white-space:pre-wrap}
+.latest{background:var(--ink);color:#fff;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;align-self:center}
+
+/* Footer */
+footer{border-top:1px solid var(--line);padding:56px 0 calc(40px + env(safe-area-inset-bottom,0px))}
+.foot{display:grid;grid-template-columns:1.4fr 1fr;gap:32px}
+.foot p{color:var(--muted);max-width:38ch;margin-top:12px;font-size:15px}
+.fl{display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:flex-end;align-content:start;font-size:15px}
+.fl a,.fl button{color:var(--muted);text-decoration:none;background:none;border:0;font:inherit;cursor:pointer;padding:0}
+.fl a:hover,.fl button:hover{color:var(--ink)}
+.copy{margin-top:40px;color:var(--g2);font-size:14px}
+dialog{border:0;border-radius:var(--r-lg);padding:36px;width:min(520px,calc(100% - 32px));box-shadow:0 30px 80px -20px rgba(23,23,23,.4)}
+dialog::backdrop{background:rgba(23,23,23,.35);backdrop-filter:blur(4px)}
+dialog h3{font-size:26px;margin-bottom:18px}dialog li{margin:8px 0;color:var(--muted)}dialog ul{padding-left:18px}
+dialog .btn{margin-top:24px}
+
+.rv{opacity:0;transform:translateY(14px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.rv.on{opacity:1;transform:none}
+
+@media(max-width:900px){
+.hero .wrap,.req,.dl,.foot{grid-template-columns:1fr}
+.mark{max-width:300px;justify-self:start;order:-1}
+.c-cpu,.c-charts,.c-hist{grid-column:span 6}.c-gpu,.c-ram,.c-ssd,.c-hw{grid-column:span 3}.c-alerts{grid-column:span 6}.c-cpu{grid-row:auto}
+.c-cpu h3{margin-top:60px}
+.fl{justify-content:flex-start}
+}
+@media(max-width:820px){
+.links{display:none;position:absolute;left:12px;right:12px;top:calc(100% + 8px);flex-direction:column;background:rgba(255,255,255,.96);
+border:1px solid var(--line);border-radius:var(--r-md);padding:8px;box-shadow:0 20px 50px -20px rgba(23,23,23,.3)}
+.links.open{display:flex}.links a{padding:14px 16px;font-size:16px}
+.burger{display:grid}.nav{position:relative}.nav>.btn.sm{display:none}
+}
+@media(max-width:560px){
+.c-gpu,.c-ram,.c-ssd,.c-hw,.c-alerts{grid-column:span 6}.card{min-height:200px}
+.facts{grid-template-columns:1fr}.ver>summary,.ver>.head{flex-wrap:wrap;gap:6px 14px}
+.hero .cta .btn{width:100%}.lang button{padding:6px 8px}
+}
+@media(prefers-reduced-motion:reduce){
+*{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+.mark circle.ring{stroke-dashoffset:0}.mark .fade,.rv{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<header id="top">
+  <nav class="nav" aria-label="Navigation principale">
+    <a class="logo" href="#hero" aria-label="NEXUS">NEXUS</a>
+    <div class="links" id="links">
+      <a href="#hero" data-i="nav_home">Accueil</a>
+      <a href="#features" data-i="nav_features">Fonctionnalités</a>
+      <a href="#config" data-i="nav_config">Configuration</a>
+      <a href="#changelog" data-i="nav_log">Changelog</a>
+      <a href="#download" data-i="nav_dl">Télécharger</a>
+    </div>
+    <div class="lang" role="group" aria-label="Langue">
+      <button type="button" data-lang="fr" aria-pressed="true">FR</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a class="btn sm" href="#download" data-i="nav_dl_btn">Télécharger</a>
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="links" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#171717" stroke-width="1.8" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg>
+    </button>
+  </nav>
+</header>
+
+<main>
+<section class="hero" id="hero">
+  <div class="wrap">
+    <div>
+      <h1 data-i="hero_title">Votre matériel. En toute clarté.</h1>
+      <p class="lead" data-i="hero_desc">Surveillez les performances de votre PC, comprenez son comportement et gardez le contrôle de votre matériel avec NEXUS.</p>
+      <div class="cta">
+        <a class="btn" href="#download" id="heroBtn" data-i="cta">Télécharger pour Windows 11</a>
+        <span class="compat" data-i="compat">Compatible Windows 11</span>
+      </div>
+    </div>
+    <svg class="mark" viewBox="0 0 480 480" role="img" aria-label="Composition graphique abstraite">
+      <circle class="ring" cx="240" cy="240" r="226" pathLength="1"/>
+      <circle class="ring" cx="240" cy="240" r="164" pathLength="1"/>
+      <circle class="ring" cx="240" cy="240" r="102" pathLength="1"/>
+      <g class="fade">
+        <path d="M240 14v452M14 240h452" stroke="#E8E8E8" stroke-width="1"/>
+        <circle cx="240" cy="240" r="56" fill="#F2E8D8"/>
+        <circle cx="240" cy="240" r="5" fill="#171717"/>
+        <circle cx="400" cy="126" r="7" fill="#171717"/><circle cx="123" cy="358" r="7" fill="#171717"/>
+        <circle cx="240" cy="138" r="5" fill="#858585"/><circle cx="66" cy="240" r="5" fill="#858585"/>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="wrap">
+    <h2 class="rv" data-i="feat_title">Tout ce qui compte. Rien de superflu.</h2>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section id="config">
+  <div class="wrap req">
+    <div class="rv">
+      <h2 data-i="req_title">Configuration requise</h2>
+      <p class="lead" data-i="req_desc">Ce qu'il faut pour faire fonctionner NEXUS sur votre PC.</p>
+    </div>
+    <div class="rv">
+      <dl class="specs" id="specs"></dl>
+      <p class="note" data-i="req_note">Les valeurs « à confirmer » seront publiées après validation.</p>
+    </div>
+  </div>
+</section>
+
+<section id="download" style="padding-top:0">
+  <div class="wrap">
+    <div class="dl rv">
+      <div>
+        <h2 data-i="dl_title">Prenez le contrôle de votre PC.</h2>
+        <p class="lead" data-i="dl_desc">Un seul installateur pour Windows 11.</p>
+      </div>
+      <div class="dlbox">
+        <dl class="facts" id="facts"></dl>
+        <a class="btn" id="dlBtn" href="#download" aria-disabled="true" data-i="cta">Télécharger pour Windows 11</a>
+        <p class="status" id="dlStatus" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="changelog" style="padding-top:0">
+  <div class="wrap">
+    <h2 class="rv" data-i="log_title">Historique des versions</h2>
+    <div class="log" id="log" aria-live="polite"></div>
+    <p class="note" data-i="log_note">Les notes de version sont affichées dans leur langue d'origine.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a class="logo" href="#hero">NEXUS</a>
+        <p data-i="foot_desc">NEXUS surveille le matériel de votre PC sous Windows 11.</p>
+      </div>
+      <div class="fl" id="social">
+        <button type="button" id="legalBtn" data-i="legal">Mentions légales</button>
+      </div>
+    </div>
+    <p class="copy"><span id="year"></span> NEXUS. <span data-i="rights">Tous droits réservés.</span></p>
+  </div>
+</footer>
+
+<dialog id="legalDlg" aria-labelledby="legalTitle">
+  <h3 id="legalTitle" data-i="legal">Mentions légales</h3>
+  <ul id="legalList"></ul>
+  <button class="btn sm" type="button" id="legalClose" data-i="close">Fermer</button>
+</dialog>
+
+<script>
+/* ===== Configuration centralisée : à renseigner ===== */
+const CONFIG = {
+  owner: "takumi",                 // Propriétaire GitHub (ex. "mon-compte"). Vide = téléchargement indisponible.
+  repo: "Nexus-Monitor",
+  social: { github: "https://github.com/takumi-nexus", instagram: "https://www.instagram.com/n.mstk06k/", discord: "https://discord.com/users/1563134194127872000" },   // URL complètes ; vide = lien masqué
+  alertsFeature: false,      // true uniquement si les alertes existent dans la version livrée
+  requirements: { arch: "x64", ram: "4 GB", disk: "500 MB", other: "Un peu de curiosité" } // vide = « à confirmer »
+};
+
+const T = {
+fr:{nav_home:"Accueil",nav_features:"Fonctionnalités",nav_config:"Configuration",nav_log:"Changelog",nav_dl:"Télécharger",nav_dl_btn:"Télécharger",
+cta:"Télécharger pour Windows 11",compat:"Compatible Windows 11",
+hero_title:"Votre matériel. En toute clarté.",hero_desc:"Surveillez les performances de votre PC, comprenez son comportement et gardez le contrôle de votre matériel avec NEXUS.",
+feat_title:"Tout ce qui compte. Rien de superflu.",
+cpu:["Processeur","Suivez l'activité de votre processeur au fil du temps, d'un coup d'œil."],
+gpu:["Carte graphique","Gardez un œil sur votre GPU pendant vos usages les plus exigeants."],
+ram:["Mémoire vive","Visualisez l'utilisation de votre RAM."],
+ssd:["Stockage SSD","Consultez l'état et l'usage de vos disques."],
+hw:["Surveillance matérielle","Une vue d'ensemble des composants de votre machine."],
+charts:["Graphiques","Observez l'évolution des mesures dans le temps."],
+hist:["Historique local","Retrouvez vos mesures passées, conservées sur votre PC."],
+alerts:["Alertes","Soyez prévenu en cas de fonctionnement anormal."],
+req_title:"Configuration requise",req_desc:"Ce qu'il faut pour faire fonctionner NEXUS sur votre PC.",
+req_os:"Système d'exploitation",req_arch:"Architecture",req_ram:"Mémoire vive minimale",req_disk:"Espace disque",req_other:"Autres prérequis",
+os_val:"Windows 11",tbc:"À confirmer",req_note:"Les valeurs « à confirmer » seront publiées après validation.",
+dl_title:"Prenez le contrôle de votre PC.",dl_desc:"Un seul installateur pour Windows 11.",
+f_name:"Logiciel",f_ver:"Version",f_date:"Publiée le",f_size:"Taille",f_sys:"Système",f_file:"Fichier",
+st_loading:"Recherche de la dernière version…",
+st_none:"Le téléchargement n'est pas encore disponible. Aucune version n'a été publiée.",
+st_noinst:"Une version existe, mais aucun installateur n'y est associé pour le moment.",
+st_err:"Impossible de joindre GitHub pour le moment. Réessayez dans quelques instants.",
+st_rate:"GitHub limite temporairement les requêtes. Réessayez dans quelques minutes.",
+st_cfg:"Le dépôt GitHub n'est pas encore configuré.",
+log_title:"Historique des versions",log_note:"Les notes de version sont affichées dans leur langue d'origine.",
+log_empty:"Aucune version publiée pour l'instant.",log_latest:"Dernière version",
+s_feat:"Nouveautés",s_impr:"Améliorations",s_fix:"Corrections",s_other:"Notes",log_none_body:"Aucune note fournie pour cette version.",
+foot_desc:"NEXUS surveille le matériel de votre PC sous Windows 11.",legal:"Mentions légales",rights:"Tous droits réservés.",close:"Fermer",
+lg:["Éditeur : à compléter","Responsable de la publication : à compléter","Adresse : à compléter","Contact : à compléter","Hébergeur : à compléter"],
+size:["o","Ko","Mo","Go"],dl_ph:"…"},
+en:{nav_home:"Home",nav_features:"Features",nav_config:"Requirements",nav_log:"Changelog",nav_dl:"Download",nav_dl_btn:"Download",
+cta:"Download for Windows 11",compat:"Windows 11 compatible",
+hero_title:"Your hardware. Perfectly clear.",hero_desc:"Monitor your PC's performance, understand how it behaves and stay in control of your hardware with NEXUS.",
+feat_title:"Everything that matters. Nothing that doesn't.",
+cpu:["Processor","Follow your processor's activity over time, at a glance."],
+gpu:["Graphics card","Keep an eye on your GPU during your most demanding workloads."],
+ram:["Memory","See how your RAM is being used."],
+ssd:["SSD storage","Check the health and usage of your drives."],
+hw:["Hardware monitoring","An overview of your machine's components."],
+charts:["Charts","Watch how measurements evolve over time."],
+hist:["Local history","Look back at past measurements, kept on your PC."],
+alerts:["Alerts","Get notified when something runs abnormally."],
+req_title:"System requirements",req_desc:"What it takes to run NEXUS on your PC.",
+req_os:"Operating system",req_arch:"Architecture",req_ram:"Minimum memory",req_disk:"Disk space",req_other:"Other requirements",
+os_val:"Windows 11",tbc:"To be confirmed",req_note:"Values marked “to be confirmed” will be published once validated.",
+dl_title:"Take control of your PC.",dl_desc:"A single installer for Windows 11.",
+f_name:"Software",f_ver:"Version",f_date:"Released",f_size:"Size",f_sys:"System",f_file:"File",
+st_loading:"Looking for the latest version…",
+st_none:"Download isn't available yet. No version has been published.",
+st_noinst:"A version exists, but it has no installer attached yet.",
+st_err:"Couldn't reach GitHub right now. Please try again shortly.",
+st_rate:"GitHub is temporarily limiting requests. Please try again in a few minutes.",
+st_cfg:"The GitHub repository isn't configured yet.",
+log_title:"Version history",log_note:"Release notes are shown in their original language.",
+log_empty:"No version has been published yet.",log_latest:"Latest",
+s_feat:"New features",s_impr:"Improvements",s_fix:"Bug fixes",s_other:"Notes",log_none_body:"No notes provided for this version.",
+foot_desc:"NEXUS monitors your PC's hardware on Windows 11.",legal:"Legal notice",rights:"All rights reserved.",close:"Close",
+lg:["Publisher: to be completed","Publication director: to be completed","Address: to be completed","Contact: to be completed","Host: to be completed"],
+size:["B","KB","MB","GB"],dl_ph:"…"}
+};
+
+const ICONS={
+cpu:'<rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/>',
+gpu:'<rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/>',
+ram:'<path d="M6 19v-3M10 19v-3M14 19v-3M18 19v-3M8 11V9M16 11V9M12 11V9M2 15h20M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v1.1a2 2 0 0 0 0 3.837V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-5.1a2 2 0 0 0 0-3.837Z"/>',
+ssd:'<path d="M22 12H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><path d="M6 16h.01M10 16h.01"/>',
+hw:'<path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>',
+charts:'<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/>',
+hist:'<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/>',
+alerts:'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>'};
+
+const $=s=>document.querySelector(s);
+let lang="fr", state={status:"loading"};
+try{const s=localStorage.getItem("nexus-lang");if(s==="fr"||s==="en")lang=s;}catch(e){}
+
+/* ---------- GitHub ---------- */
+const BAD=/debug|symbol|pdb|portable|source|\.sha|\.sig|blockmap|\.zip$|\.7z$|\.nupkg$/i;
+function pickInstaller(assets){
+  const c=(assets||[]).filter(a=>a&&a.state==="uploaded"&&/\.(exe|msi)$/i.test(a.name)&&!BAD.test(a.name));
+  if(!c.length)return null;
+  const score=a=>(/setup|install/i.test(a.name)?10:0)+(/nexus/i.test(a.name)?3:0)+(/x64|amd64|win64/i.test(a.name)?1:0)+(/\.exe$/i.test(a.name)?1:0);
+  return c.sort((a,b)=>score(b)-score(a)||a.name.localeCompare(b.name))[0];
+}
+async function loadReleases(){
+  if(!CONFIG.owner){return{status:"cfg"};}
+  try{
+    const r=await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/releases?per_page=30`,{headers:{Accept:"application/vnd.github+json"}});
+    if(r.status===403||r.status===429)return{status:"rate"};
+    if(!r.ok)return{status:"err"};
+    const data=await r.json();
+    if(!Array.isArray(data))return{status:"err"};
+    const rel=data.filter(x=>x&&!x.draft&&typeof x.tag_name==="string");
+    if(!rel.length)return{status:"none"};
+    const latest=rel.find(x=>!x.prerelease)||null;
+    const inst=latest?pickInstaller(latest.assets):null;
+    return{status:latest?(inst?"ok":"noinst"):"none",releases:rel,latest,inst};
+  }catch(e){return{status:"err"}}
+}
+
+/* ---------- Notes de version ---------- */
+function parseNotes(body){
+  const out={feat:[],impr:[],fix:[],other:[]};let cur="other",any=false;
+  for(const raw of String(body||"").split(/\r?\n/)){
+    const l=raw.trim();if(!l)continue;
+    const h=l.match(/^#{1,4}\s*(.+)$/);
+    if(h){const t=h[1];cur=/nouveaut|feature|added|new|ajout/i.test(t)?"feat":/am[ée]lior|improv|chang|modif/i.test(t)?"impr":/correct|fix|bug/i.test(t)?"fix":"other";any=true;continue;}
+    out[cur].push(l.replace(/^[-*+]\s+/,""));
+  }
+  return any?out:{feat:[],impr:[],fix:[],other:[String(body||"").trim()]};
+}
+
+/* ---------- Rendu ---------- */
+const fmtDate=d=>new Intl.DateTimeFormat(lang==="fr"?"fr-FR":"en-GB",{day:"numeric",month:"long",year:"numeric"}).format(new Date(d));
+function fmtSize(n){const u=T[lang].size;let i=0;while(n>=1024&&i<3){n/=1024;i++}return n.toLocaleString(lang==="fr"?"fr-FR":"en-GB",{maximumFractionDigits:i>1?1:0})+" "+u[i]}
+const el=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e};
+
+function renderStatic(){
+  const t=T[lang];document.documentElement.lang=lang;
+  document.querySelectorAll("[data-i]").forEach(n=>{const v=t[n.dataset.i];if(typeof v==="string")n.textContent=v});
+  document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lang===lang)));
+  const g=$("#grid");g.textContent="";
+  [["cpu","c-cpu"],["gpu","c-gpu"],["hw","c-hw"],["ram","c-ram"],["ssd","c-ssd"],["charts","c-charts"],["hist","c-hist"],...(CONFIG.alertsFeature?[["alerts","c-alerts"]]:[])].forEach(([k,c])=>{
+    const a=el("article","card rv on "+c);
+    const top=el("div","ico");top.innerHTML=`<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[k]}</svg>`;
+    const b=el("div");b.append(el("h3","",t[k][0]),el("p","",t[k][1]));a.append(top,b);g.append(a);
+  });
+  const rq=CONFIG.requirements,s=$("#specs");s.textContent="";
+  [["req_os",t.os_val],["req_arch",rq.arch],["req_ram",rq.ram],["req_disk",rq.disk],["req_other",rq.other]].forEach(([k,v])=>{
+    const row=el("div"),dd=el("dd",v?"":"tbc",v||t.tbc);row.append(el("dt","",t[k]),dd);s.append(row)});
+  const ul=$("#legalList");ul.textContent="";t.lg.forEach(x=>ul.append(el("li","",x)));
+  $("#year").textContent="© "+new Date().getFullYear();
+  renderSocial();renderDownload();renderLog();
+}
+function renderSocial(){
+  const box=$("#social");box.querySelectorAll("a").forEach(a=>a.remove());
+  const s=CONFIG.social,gh=s.github||(CONFIG.owner?`https://github.com/${CONFIG.owner}`:"");
+  [["GitHub",gh],["Instagram",s.instagram],["Discord",s.discord]].forEach(([n,u])=>{
+    if(!u)return;const a=el("a","",n);a.href=u;a.target="_blank";a.rel="noopener noreferrer";box.prepend(a)});
+}
+function renderDownload(){
+  const t=T[lang],f=$("#facts"),btn=$("#dlBtn"),st=$("#dlStatus");f.textContent="";
+  const add=(k,v,full)=>{const d=el("div",full?"full":"");const dd=el("dd","");typeof v==="string"?dd.textContent=v:dd.append(v);d.append(el("dt","",t[k]),dd);f.append(d)};
+  const ph=()=>el("span","skeleton");
+  add("f_name","NEXUS");add("f_sys","Windows 11");
+  if(state.status==="ok"){
+    const{latest,inst}=state;add("f_ver",latest.tag_name);add("f_date",latest.published_at?fmtDate(latest.published_at):"—");
+    add("f_size",fmtSize(inst.size));add("f_file",inst.name,true);
+    btn.href=inst.browser_download_url;btn.removeAttribute("aria-disabled");st.textContent="";
+  }else{
+    add("f_ver",state.status==="loading"?ph():"—");add("f_date","—");add("f_size","—");add("f_file","—",true);
+    btn.setAttribute("aria-disabled","true");btn.removeAttribute("href");
+    st.textContent={loading:t.st_loading,none:t.st_none,noinst:t.st_noinst,err:t.st_err,rate:t.st_rate,cfg:t.st_cfg}[state.status]||"";
+  }
+  const hb=$("#heroBtn");hb.href="#download";
+}
+function renderLog(){
+  const t=T[lang],box=$("#log");box.textContent="";
+  if(!state.releases||!state.releases.length){box.append(el("p","note",state.status==="loading"?t.st_loading:t.log_empty));return}
+  state.releases.forEach((r,i)=>{
+    const wrap=el(state.releases.length>1&&i>0?"details":"div","ver"+"");
+    const head=el(wrap.tagName==="DETAILS"?"summary":"div",wrap.tagName==="DETAILS"?"":"head");
+    head.append(el("span","v",r.name||r.tag_name),el("span","d",r.published_at?fmtDate(r.published_at):""));
+    if(i===0)head.append(el("span","latest",t.log_latest));
+    if(wrap.tagName==="DETAILS")head.insertAdjacentHTML("beforeend",'<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>');
+    const body=el("div","body"),n=parseNotes(r.body);let has=false;
+    [["feat","s_feat"],["impr","s_impr"],["fix","s_fix"]].forEach(([k,lab])=>{if(!n[k].length)return;has=true;
+      const d=el("div");d.append(el("h4","",t[lab]));const ul=el("ul");n[k].forEach(x=>ul.append(el("li","",x)));d.append(ul);body.append(d)});
+    const o=n.other.join("\n").trim();if(o){has=true;body.append(el("pre","",o))}
+    if(!has)body.append(el("p","note",t.log_none_body));
+    wrap.append(head,body);if(i===0&&wrap.tagName==="DETAILS")wrap.open=true;box.append(wrap);
+  });
+}
+
+/* ---------- Interactions ---------- */
+document.querySelectorAll("[data-lang]").forEach(b=>b.addEventListener("click",()=>{lang=b.dataset.lang;try{localStorage.setItem("nexus-lang",lang)}catch(e){}renderStatic()}));
+const burger=$("#burger"),links=$("#links");
+burger.addEventListener("click",()=>{const o=links.classList.toggle("open");burger.setAttribute("aria-expanded",String(o))});
+links.addEventListener("click",e=>{if(e.target.tagName==="A"){links.classList.remove("open");burger.setAttribute("aria-expanded","false")}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){links.classList.remove("open");burger.setAttribute("aria-expanded","false")}});
+const dlg=$("#legalDlg");$("#legalBtn").onclick=()=>dlg.showModal();$("#legalClose").onclick=()=>dlg.close();
+addEventListener("scroll",()=>document.body.classList.toggle("scrolled",scrollY>40),{passive:true});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("on");io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll(".rv").forEach(n=>io.observe(n));
+
+renderStatic();
+loadReleases().then(r=>{state=r;renderDownload();renderLog()});
+</script>
+</body>
+</html>
